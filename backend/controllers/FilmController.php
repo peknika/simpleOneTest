@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\Comment;
+use common\models\User;
 use Yii;
 use backend\models\Film;
 use backend\models\FilmSearch;
@@ -52,8 +54,12 @@ class FilmController extends Controller
      */
     public function actionView($id)
     {
+        $comments = Comment::findAll(['instance_record_id' => $id, 'instance_name' => Comment::INSTANCE_NAME_FILM]);
+        $users = User::find()->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'comments' => $comments,
+            'users' => $users
         ]);
     }
 
@@ -101,6 +107,8 @@ class FilmController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {

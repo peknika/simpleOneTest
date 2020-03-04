@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'director_id',
             'year',
+            'director.name',
             'review',
 
             ['class' => 'yii\grid\ActionColumn'],
