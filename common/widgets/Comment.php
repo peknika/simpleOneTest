@@ -1,17 +1,19 @@
 <?php
+
 namespace common\widgets;
 
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 
 
-class CommentWidget extends \yii\bootstrap\Widget
+class Comment extends \yii\bootstrap\Widget
 {
-public $model;
-public $username;
-public $level;
+    public $model;
+    public $username;
+    public $level;
 
-    public function init(){
+    public function init()
+    {
         parent::init();
         if ($this->model === null) {
             throw new InvalidConfigException('Please specify the "model" property.');
@@ -29,4 +31,5 @@ public $level;
                         </div>";
     }
 }
+
 ?>

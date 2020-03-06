@@ -54,12 +54,10 @@ class FilmController extends Controller
      */
     public function actionView($id)
     {
-        $comments = Comment::findAll(['instance_record_id' => $id, 'instance_name' => Comment::INSTANCE_NAME_FILM]);
-        $users = User::find()->all();
+        $comments = Comment::find()->where(['instance_record_id' => $id, 'instance_name' => Comment::INSTANCE_NAME_FILM])->orderBy('created_at')->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'comments' => $comments,
-            'users' => $users
         ]);
     }
 

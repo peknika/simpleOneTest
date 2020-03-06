@@ -1,7 +1,6 @@
 <?php
 
-use common\models\User;
-use \common\widgets\CommentWidget;
+use \common\widgets\Comments;
 use common\models\Comment;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -10,7 +9,6 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Film */
 /* @var $comments Comment[] */
-/* @var  $users User[] */
 
 $comment = new Comment();
 
@@ -52,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'instance_name' => Comment::INSTANCE_NAME_FILM,
                 'instance_record_id' => $model->id
             ],]); ?>
+
             <?= $form->field($comment, 'text')->textarea(['rows' => 3]) ?>
         </p>
         <p>
@@ -60,29 +59,22 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
     </div>
 
-    <?php
-
-    function buildComment($comments, $currentComment, $users, $level)
-    {
-        echo CommentWidget::widget([
-            'model' => $currentComment,
-            'level' => $level,
-            'username' => $currentComment->user_id ? $currentComment->getUser($currentComment->user_id)->one()->username: 'incognito'
-        ]);
-        foreach ($comments as $comment) {
-            if ($comment->parent_id === $currentComment->id) {
-                buildComment($comments, $comment, $users, $level + 20);
-            }
-        }
-    }
-
-    foreach ($comments as $comm)
-    {
-        if(!$comm->parent_id)
-        {
-            buildComment($comments,$comm, $users,15);
-        }
-    }
+    <?= Comments::widget([
+        'comments' => $comments
+    ]);
     ?>
 
+    <script>
+        const form = document.getElementById('w1');
+        const buttons = document.getElementsByClassName('reply');
+        const textarea = document.getElementById('comment-text')
+        for (button of buttons) {
+            button.addEventListener('click', (event) => {
+                const {parent_id} = event.target.dataset;
+                textarea.focus();
+                form.action = form.action + '&parent_id=' + parent_id;
+                console.log(form.action)
+            });
+        }
+    </script>
 </div>

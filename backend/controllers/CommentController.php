@@ -77,11 +77,15 @@ class CommentController extends Controller
         ]);
     }
 
-    public function actionAdd($instance_name, $instance_record_id)
+    public function actionAdd($instance_name, $instance_record_id, $parent_id = null)
     {
         $comment = new Comment();
         if ($comment->load(Yii::$app->request->post()))
         {
+            if ($parent_id)
+            {
+                $comment->parent_id = $parent_id;
+            }
             $comment->instance_name = $instance_name;
             $comment->instance_record_id = $instance_record_id;
            if (!$comment->save()){
